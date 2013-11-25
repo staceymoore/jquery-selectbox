@@ -1,10 +1,8 @@
-/*!
- * jQuery Selectbox plugin 0.2
- *
- * Copyright 2011-2012, Dimitar Ivanov (http://www.bulgaria-web-developers.com/projects/javascript/selectbox/)
- * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+/*
+ * jQuery Selectbox plugin 0.3
+ * https://github.com/zoerooney/jquery-selectbox
  * 
- * Date: Tue Jul 17 19:58:36 2012 +0300
+ * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license. 
  */
 (function ($, undefined) {
 	var PROP_NAME = 'selectbox',
@@ -80,7 +78,7 @@
 				sbHolder, sbSelector, sbToggle, sbOptions,
 				s = FALSE, optGroup = $target.find("optgroup"), opts = $target.find("option"), olen = opts.length;
 				
-			$target.attr("sb", inst.uid);
+			$target.prop("sb", inst.uid);
 				
 			$.extend(inst.settings, self._defaults, settings);
 			self._state[inst.uid] = FALSE;
@@ -88,7 +86,7 @@
 			
 			function closeOthers() {
 				var key, sel,
-					uid = this.attr("id").split("_")[1];
+					uid = this.prop("id").split("_")[1];
 				for (key in self._state) {
 					if (key !== uid) {
 						if (self._state.hasOwnProperty(key)) {
@@ -104,7 +102,7 @@
 			sbHolder = $("<div>", {
 				"id": "sbHolder_" + inst.uid,
 				"class": inst.settings.classHolder,
-				"tabindex": $target.attr("tabindex")
+				"tabindex": $target.prop("tabindex")
 			});
 			
 			sbSelector = $("<a>", {
@@ -114,7 +112,7 @@
 				"click": function (e) {
 					e.preventDefault();
 					closeOthers.apply($(this), []);
-					var uid = $(this).attr("id").split("_")[1];
+					var uid = $(this).prop("id").split("_")[1];
 					if (self._state[uid]) {
 						self._closeSelectbox(target);
 					} else {
@@ -130,7 +128,7 @@
 				"click": function (e) {
 					e.preventDefault();
 					closeOthers.apply($(this), []);
-					var uid = $(this).attr("id").split("_")[1];
+					var uid = $(this).prop("id").split("_")[1];
 					if (self._state[uid]) {
 						self._closeSelectbox(target);
 					} else {
@@ -155,7 +153,7 @@
 				} else if (that.is("optgroup")) {
 					li = $("<li>");
 					$("<span>", {
-						"text": that.attr("label")
+						"text": that.prop("label")
 					}).addClass(inst.settings.classGroup).appendTo(li);
 					li.appendTo(sbOptions);
 					if (that.is(":disabled")) {
@@ -190,8 +188,8 @@
 							}
 							var t = sbToggle,
 							 	$this = $(this),
-								uid = t.attr("id").split("_")[1];
-							self._changeSelectbox(target, $this.attr("rel"), $this.text());
+								uid = t.prop("id").split("_")[1];
+							self._changeSelectbox(target, $this.prop("rel"), $this.text());
 							self._closeSelectbox(target);
 						}).bind("mouseover.sb", function () {
 							var $this = $(this);
@@ -262,7 +260,7 @@
 						break;				
 					case 13: //Enter
 						if ($f.length > 0) {
-							self._changeSelectbox(trgt, $f.attr("rel"), $f.text());
+							self._changeSelectbox(trgt, $f.prop("rel"), $f.text());
 						}
 						self._closeSelectbox(trgt);
 						break;
@@ -271,12 +269,12 @@
 							var inst = self._getInst(trgt);
 							if (inst/* && inst.isOpen*/) {
 								if ($f.length > 0) {
-									self._changeSelectbox(trgt, $f.attr("rel"), $f.text());
+									self._changeSelectbox(trgt, $f.prop("rel"), $f.text());
 								}
 								self._closeSelectbox(trgt);
 							}
 						}
-						var i = parseInt($this.attr("tabindex"), 10);
+						var i = parseInt($this.prop("tabindex"), 10);
 						if (!e.shiftKey) {
 							i++;
 						} else {
@@ -300,7 +298,7 @@
 			sbOptions.appendTo(sbHolder);			
 			sbHolder.insertAfter($target);
 			
-			$("html").live('mousedown', function(e) {
+			$("html").on('mousedown', function(e) {
 				e.stopPropagation();          
 				$("select").selectbox('close'); 
 			});
@@ -337,7 +335,7 @@
 				$("#sbSelector_" + inst.uid).text(text);
 			}
 			value = value.replace(/\'/g, "\\'");
-			$(target).find("option[value='" + value + "']").attr("selected", TRUE);
+			$(target).find("option[value='" + value + "']").prop("selected", TRUE);
 			if (inst && onChange) {
 				onChange.apply((inst.input ? inst.input[0] : null), [value, inst]);
 			} else if (inst && inst.input) {
